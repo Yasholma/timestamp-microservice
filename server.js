@@ -22,6 +22,13 @@ app.get("/", function (req, res) {
 app.get("/api/timestamp/:date_string?", function (req, res) {
     let dateString = req.params["date_string"];
     let datetime = "";
+
+    if (/\d{5,}/.test(dateString)) {
+        dateInt = parseInt(dateString);
+        //Date regards numbers as unix timestamps, strings are processed differently
+        res.json({ unix: dateString, utc: new Date(dateInt).toUTCString() });
+    }
+
     if (!dateString) {
         datetime = new Date();
     } else {
